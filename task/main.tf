@@ -38,13 +38,6 @@ resource "aws_iam_role_policy" "revoke_keys_role_policy" {
 EOF
 }
 
-data "archive_file" "lambda_my_function" {
-  type             = "zip"
-  source_file      = "../lambda_function.py"
-  output_file_mode = "0666"
-  output_path      = "../lambda_function.zip"
-}
-
 
 
 resource "aws_lambda_function" "test_lambda" {
@@ -66,16 +59,6 @@ resource "aws_lambda_function" "test_lambda" {
   }
 }
 
-#resource "aws_lambda_function_event_invoke_config" "event-lambda" {
-#  function_name = aws_lambda_function.test_lambda.function_name
-#  maximum_event_age_in_seconds = 60
-#  qualifier     = "$LATEST"
-#  maximum_retry_attempts = var.retry //set to 0 to avoid lambda retry attempts
-
-#  depends_on = [
-#    aws_lambda_function.test_lambda
-#  ]
-#}
 
 resource "aws_cloudwatch_log_group" "example" {
   name              = "/aws/lambda/${var.function_name}"
